@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useRef, useEffect } from 'react'
 import { Cell, Input, Button, Checkbox, Toast } from 'zarm'
 import CustomIcon from '@/components/CustomIcon'
 import Captcha from "react-captcha-code"
@@ -8,6 +8,7 @@ import cx from 'classnames'
 import s from './style.module.less'
 
 const Login = () => {
+  const captchaRef = useRef()
   const [ username, setUsername ] = useState(''); // 账号
   const [ password, setPassword ] = useState(''); // 密码
   const [ verify, setVerify ] = useState(''); // 验证码
@@ -62,6 +63,9 @@ const Login = () => {
       Toast.show('系统错误');
     }
   };
+  useEffect(() => {
+    document.title = type == 'login' ? '登录' : '注册';
+  }, [ type ])
   return <div className={s.auth}>
     <div className={s.head} />
     <div className={s.tab}>
@@ -101,7 +105,7 @@ const Login = () => {
       {
         type == 'register' ? <div className={s.agree}>
           <Checkbox />
-          <label className="text-light">阅读并同意<a>《掘掘手札条款》</a></label>
+          <label className="text-light">阅读并同意<a>《手札条款》</a></label>
         </div> : null
       }
       <Button onClick={onSubmit} block theme="primary">{type == 'login' ? '登录' : '注册'}</Button>
